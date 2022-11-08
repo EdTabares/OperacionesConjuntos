@@ -122,6 +122,11 @@ public class Conjuntos {
                         }
                         break;
                         
+                    case 5: //Unión
+                        ResultVector = AVector.union(BVector);
+                        JOptionPane.showMessageDialog(null, "La unión de A y B es:\n" + ResultVector.show());
+                        break;
+                        
                     case 11: //Mostrar A
                         JOptionPane.showMessageDialog(null, "El conjunto A es: "+AVector.show());
                         break;

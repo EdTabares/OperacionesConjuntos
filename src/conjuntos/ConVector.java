@@ -100,5 +100,26 @@ public class ConVector {
         answer = answer + "}";
         return answer;
     }
+    
+    public boolean included (ConVector BVector){
+        boolean answer = true;
+        for (int i = 0; i < this.getSize(); i++) {
+            if(!BVector.exist(this.getDato(i)))
+                answer = false;
+        }
+        return answer;
+    }
+    
+    public ConVector union (ConVector BVector){
+        ConVector answer = new ConVector(0);
+        answer.setVec(this.vec);
+        answer.setSize(this.getSize());
+        for (int i = 0; i < BVector.getSize(); i++) {
+            if (!answer.exist(BVector.getDato(i))) {
+                answer.insert(BVector.getDato(i));
+            }
+        }
+        return answer;
+    }
 
 }
