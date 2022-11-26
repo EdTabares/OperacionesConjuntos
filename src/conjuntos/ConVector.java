@@ -48,8 +48,9 @@ public class ConVector {
     public boolean exist(int value) {
         boolean answer = false;
         for (int i = 0; i < this.getSize(); i++) {
-            if (this.getDato(i) == value) 
-                answer = true;            
+            if (this.getDato(i) == value) {
+                answer = true;
+            }
         }
         return answer;
     }
@@ -61,7 +62,7 @@ public class ConVector {
         }
         newVector[this.getSize()] = value;
         this.setVec(newVector);
-        this.setSize(this.getSize()+1);
+        this.setSize(this.getSize() + 1);
     }
 
     public void defineU(String setString) {
@@ -76,12 +77,12 @@ public class ConVector {
             }
         }
     }
-    
-    public void define(ConVector universal, String setString){
+
+    public void define(ConVector universal, String setString) {
         this.empty();
         String[] split = setString.split(",");
         for (int i = 0; i < split.length; i++) {
-            if (isNumeric(split[i])){
+            if (isNumeric(split[i])) {
                 int value = Integer.parseInt(split[i]);
                 if (!this.exist(value) && universal.exist(value)) {
                     this.insert(value);
@@ -91,26 +92,28 @@ public class ConVector {
     }
 
     public String show() {
-        String answer = "{";
+        String answer = "[";
         for (int i = 0; i < this.getSize(); i++) {
             answer = answer + this.getDato(i);
-            if (i + 1 != this.getSize())
-                answer = answer + ", ";            
+            if (i + 1 != this.getSize()) {
+                answer = answer + ", ";
+            }
         }
-        answer = answer + "}";
+        answer = answer + "]";
         return answer;
     }
-    
-    public boolean included (ConVector BVector){
+
+    public boolean included(ConVector BVector) {
         boolean answer = true;
         for (int i = 0; i < this.getSize(); i++) {
-            if(!BVector.exist(this.getDato(i)))
+            if (!BVector.exist(this.getDato(i))) {
                 answer = false;
+            }
         }
         return answer;
     }
-    
-    public ConVector union (ConVector BVector){
+
+    public ConVector union(ConVector BVector) {
         ConVector answer = new ConVector(0);
         answer.setVec(this.vec);
         answer.setSize(this.getSize());
@@ -119,6 +122,59 @@ public class ConVector {
                 answer.insert(BVector.getDato(i));
             }
         }
+        return answer;
+    }
+
+    public ConVector intersection(ConVector BVector) {
+        ConVector answer = new ConVector(0);
+
+        for (int i = 0; i < this.getSize(); i++) {
+            if (BVector.exist(this.getDato(i))) {
+                answer.insert(this.getDato(i));
+            }
+        }
+        return answer;
+    }
+
+    public boolean equal(ConVector BVector) {
+        boolean equal = true;
+        int i = 0;
+                
+
+        while (equal == true && i < this.getSize()) {
+            if (!BVector.exist(this.getDato(i))) {
+                equal = false;
+            }
+            i++;
+        }
+        
+        if (this.getSize() != BVector.getSize()) {
+            equal = false;
+        }
+
+        return equal;
+    }
+    
+    public ConVector minus(ConVector BVector){
+        ConVector answer = new ConVector(0);
+        
+        for (int i = 0; i < this.getSize(); i++) {
+            if (!BVector.exist(this.getDato(i))) {
+                answer.insert(this.getDato(i));
+            }
+        }
+        return answer;
+    }
+    
+    public ConVector complement(ConVector UniversalVector){
+        ConVector answer = new ConVector(0);
+        answer = UniversalVector.minus(this);
+        return answer;
+    }
+    
+    public ConVector symmetricDiff(ConVector BVector){
+        ConVector answer = new ConVector(0);
+        answer = this.minus(BVector).union(BVector.minus(this));
         return answer;
     }
 

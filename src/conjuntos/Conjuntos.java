@@ -5,14 +5,15 @@ import javax.swing.JOptionPane;
 public class Conjuntos {
 
     private static String setString = "";
+    private static String setStringL = "";
     private static ConVector UniversalVector = new ConVector(0);
-    //private static SetList UniversalList = new SetList();
+    private static ConList UniversalList = new ConList();
     private static ConVector AVector = new ConVector(0);
-    //private static SetList AList = new SetList();
+    private static ConList AList = new ConList();
     private static ConVector BVector = new ConVector(0);
-    //private static SetList BList = new SetList();
+    private static ConList BList = new ConList();
     private static ConVector ResultVector = new ConVector(0);
-    //private static SetList ResultList = new SetList();
+    private static ConList ResultList = new ConList();
 
     public static void main(String[] args) {
         menuppal();
@@ -36,11 +37,15 @@ public class Conjuntos {
                         if (UniversalVector.size == 0) {
                             JOptionPane.showMessageDialog(null, "El conjunto Universal no puede estar vacio");
                         } else {
-                        menuVectores();
+                            menuVectores();
                         }
                         break;
                     case 3:
-                        menuListas();
+                        if (UniversalVector.size == 0) {
+                            JOptionPane.showMessageDialog(null, "El conjunto Universal no puede estar vacio");
+                        } else {
+                            menuListas();
+                        }
                         break;
                     case 0:
                         System.exit(0);
@@ -86,55 +91,84 @@ public class Conjuntos {
                         setString = requestSet();
                         AVector.define(UniversalVector, setString);
                         break;
-                        
+
                     case 2: //Definir B
                         setString = requestSet();
                         BVector.define(UniversalVector, setString);
                         break;
-                        
+
                     case 3: //Pertenencia
                         setString = requestElement();
                         String answer = "";
-                        if (AVector.exist(Integer.parseInt(setString))) 
+                        if (AVector.exist(Integer.parseInt(setString))) {
                             answer = answer + "El elemento se encuentra en A\n";
-                        if (BVector.exist(Integer.parseInt(setString))) 
+                        }
+                        if (BVector.exist(Integer.parseInt(setString))) {
                             answer = answer + "El elemento se encuentra en B\n";
-                        
+                        }
+
                         if (answer == "") {
                             JOptionPane.showMessageDialog(null, "El elemento no se encuentra ni en A ni en B");
-                        } else{
+                        } else {
                             JOptionPane.showMessageDialog(null, answer);
-                        }                                           
+                        }
                         break;
-                        
+
                     case 4: //Inclusión
                         String result = "";
-                        if(AVector.included(BVector)){
+                        if (AVector.included(BVector)) {
                             result = result + "El conjunto A está incluido en B\n";
                         }
                         if (BVector.included(AVector)) {
                             result = result + "El conjunto B está incluido en A\n";
                         }
                         if (result == "") {
-                            JOptionPane.showMessageDialog(null, "Ni A ni B están incluidos en el otro");                            
+                            JOptionPane.showMessageDialog(null, "Ni A ni B están incluidos en el otro");
                         } else {
                             JOptionPane.showMessageDialog(null, result);
                         }
                         break;
-                        
+
                     case 5: //Unión
                         ResultVector = AVector.union(BVector);
                         JOptionPane.showMessageDialog(null, "La unión de A y B es:\n" + ResultVector.show());
                         break;
-                        
+
+                    case 6:
+                        ResultVector = AVector.intersection(BVector);
+                        JOptionPane.showMessageDialog(null, "La intersección de los dos conjuntos es: \n" + ResultVector.show());
+                        break;
+
+                    case 7: //Igualdad
+                        if (AVector.equal(BVector)) {
+                            JOptionPane.showMessageDialog(null, "Los conjuntos son iguales");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Los conjuntos no son iguales");
+                        }
+                        break;
+
+                    case 8: //Complemento
+                        JOptionPane.showMessageDialog(null, "El complemento de A es: \n" + AVector.complement(UniversalVector).show() + "\n\nEl Complemento de B es:\n" + BVector.complement(UniversalVector).show());
+                        break;
+
+                    case 9:  //Diferencia
+                        JOptionPane.showMessageDialog(null, "El Conjunto resultante de A - B es:\n" + AVector.minus(BVector).show()
+                                + "\n\nEl Conjunto resultante de B - A es:\n" + BVector.minus(AVector).show());
+                        break;
+
+                    case 10: //Diferencia Simétrica
+                        ResultVector = AVector.symmetricDiff(BVector);
+                        JOptionPane.showMessageDialog(null, "La diferencia simétrica de los conjuntos A y B es:\n" + ResultVector.show());
+                        break;
+
                     case 11: //Mostrar A
-                        JOptionPane.showMessageDialog(null, "El conjunto A es: "+AVector.show());
+                        JOptionPane.showMessageDialog(null, "El conjunto A es: " + AVector.show());
                         break;
-                        
+
                     case 12: //Mostrar B
-                        JOptionPane.showMessageDialog(null, "El conjunto A es: "+BVector.show());
+                        JOptionPane.showMessageDialog(null, "El conjunto A es: " + BVector.show());
                         break;
-                        
+
                     case 0:
                         System.exit(0);
                         break;
@@ -147,27 +181,102 @@ public class Conjuntos {
     }
 
     public static void menuListas() {
-        int opcion = 0;
-        String menu = "***MENU CONJUNTOS EN LISTAS***\n"
-                + "1- \n"
-                + "2- \n"
-                + "3- \n"
-                + "4- \n"
-                + "5- \n"
-                + "6- \n"
-                + "7- \n"
+        int opcion = -1;
+        String menu = "***MENU CONJUNTOS EN VECTORES***\n"
+                + "1- Definir conjunto A \n"
+                + "2- Definir conjunto B \n"
+                + "3- Pertenencia\n"
+                + "4- Inclusión\n"
+                + "5- Unión\n"
+                + "6- Intersección\n"
+                + "7- Igualdad\n"
+                + "8- Complemento\n"
+                + "9- Diferencia\n"
+                + "10- Diferencia Simétrica\n"
+                + "11- Mostrar A\n"
+                + "12- Mostrar B\n"
                 + "0- Salir";
 
         do {
             try {
                 opcion = Integer.parseInt(JOptionPane.showInputDialog(menu));
                 switch (opcion) {
-                    case 1:
+                    case 1: //Definir A
+                        setStringL = requestSet();
+                        AList.define(UniversalList, setStringL);
                         break;
-                    case 2:
+
+                    case 2: //Definir B
+                        setStringL = requestSet();
+                        BList.define(UniversalList, setStringL);
                         break;
-                    case 3:
+
+                    case 3: //Pertenencia
+                        setStringL = requestElement();
+                        String answer = "";
+                        if (isNumeric(setStringL)) {
+                            if (AList.exist(Integer.parseInt(setStringL))) {
+                                answer = answer + "El elemento se encuentra en A\n";
+                            }
+                            if (BList.exist(Integer.parseInt(setStringL))) {
+                                answer = answer + "El elemento se encuentra en B\n";
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ingreso inválido");
+                        }
+                        if (answer == "") {
+                            JOptionPane.showMessageDialog(null, "El elemento no se encuentra ni en A ni en B");
+                        } else {
+                            JOptionPane.showMessageDialog(null, answer);
+                        }
+
                         break;
+
+                    case 4: //Inclusión
+                        String result = "";
+                        if (AList.included(BList)) {
+                            result = result + "El conjunto A está incluido en B\n";
+                        }
+                        if (BList.included(AList)) {
+                            result = result + "El conjunto B está incluido en A\n";
+                        }
+                        if (result == "") {
+                            JOptionPane.showMessageDialog(null, "Ni A ni B están incluidos en el otro");
+                        } else {
+                            JOptionPane.showMessageDialog(null, result);
+                        }
+
+                        break;
+
+                    case 5: //Unión
+                        ResultList = AList.union(BList);
+                        JOptionPane.showMessageDialog(null, "El Conjunto resultante de la unión es: \n" + ResultList.show());
+                        break;
+
+                    case 6: //Intersección
+                        break;
+
+                    case 7: //Igualdad
+                        break;
+
+                    case 8: //Complemento
+                        break;
+
+                    case 9: //Diferencia
+                        break;
+
+                    case 10: //Diferencia Simetrica
+                        break;
+
+                    case 11: //Mostrar A
+                        break;
+                        
+                    case 12: //Mostrar B
+                        break;
+                        
+                    case 13: //Mostrar Universal
+                        break;
+
                     case 0:
                         System.exit(0);
                         break;
