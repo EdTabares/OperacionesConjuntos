@@ -254,27 +254,43 @@ public class Conjuntos {
                         break;
 
                     case 6: //Intersección
+                        ResultList = AList.intersection(BList);
+                        JOptionPane.showMessageDialog(null, "El Conjunto resultante de la intersección es: \n" + ResultList.show());
                         break;
 
                     case 7: //Igualdad
+                        if (AList.equal(BList)) {
+                            JOptionPane.showMessageDialog(null, "Los conjuntos A y B son iguales");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Los conjuntos A y B no son iguales");
+                        }
                         break;
 
                     case 8: //Complemento
+                        JOptionPane.showMessageDialog(null, "El complemento de A es: \n" + AList.complement(UniversalList).show() + 
+                                "\n\nEl complemento de B es: \n" + BList.complement(UniversalList).show());
                         break;
 
                     case 9: //Diferencia
+                        JOptionPane.showMessageDialog(null, "El conjunto resultante de A -B es:\n" + AList.minus(BList).show() + 
+                                "\n\nEl Conjunto resultante B-A:\n" + BList.minus(BList).show());
                         break;
 
-                    case 10: //Diferencia Simetrica
+                    case 10: //Diferencia 
+                        ResultList = AList.symmetricDiff(BList);
+                        JOptionPane.showMessageDialog(null, "La diferencia simétrica es: \n\n" + ResultList.show());
                         break;
 
-                    case 11: //Mostrar A
+                    case 11: //Mostrar A                        
+                        JOptionPane.showMessageDialog(null, "El Conjunto A es:" + AList.show());
                         break;
                         
                     case 12: //Mostrar B
+                        JOptionPane.showMessageDialog(null, "El Conjunto A es:" + BList.show());
                         break;
                         
                     case 13: //Mostrar Universal
+                        JOptionPane.showMessageDialog(null, "El Conjunto A es:" + UniversalList.show());
                         break;
 
                     case 0:

@@ -90,14 +90,66 @@ public class ConList {
         }
         return result;
     }
-    
-    public String show(){
+
+    public String show() {
         String answer = "[";
         if (this.getHead() != null) {
             Node q = this.getHead();
             answer = answer + q.getElement();
+            while (q.getLink() != null) {
+                answer = answer + ", " + q.getLink().getElement();
+                q = q.getLink();
+            }
+        }
+        answer = answer + "]";
+        return answer;
+    }
+
+    public ConList intersection(ConList BList) {
+        ConList result = new ConList();
+
+        Node q = this.getHead();
+        while (q != null) {
+            if (BList.exist(q.getElement())) {
+                result.insert(q.getElement());
+            }
             q = q.getLink();
         }
+        return result;        
+    }
+    
+    public boolean equal(ConList BList){
+        boolean answer = true;
+        if (!this.included(BList)) {
+            answer = false;
+        }
+        if (!BList.included(this)) {
+            answer = false;
+        }
+        return answer;
+    }
+    
+    public ConList minus(ConList BList){
+        ConList result = new ConList();
+        
+        Node q = this.getHead();
+        while (q != null) {            
+            if (!BList.exist(q.getElement())) {
+                result.insert(q.getElement());
+            }
+            q = q.getLink();
+        }
+        return result;
+    }
+    
+    public ConList complement(ConList UniversaList){
+        ConList result = UniversaList.minus(this);
+        return result;
+    }
+    
+    public ConList symmetricDiff(ConList BList){
+        ConList result = this.minus(BList).union(BList.minus(this));
+        return result;
     }
 
 }
